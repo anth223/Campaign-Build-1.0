@@ -223,6 +223,37 @@ function getGeminiClient(): GoogleGenAI {
   return geminiClient;
 }
 
+// Expose root configuration files for the exporter to fetch their genuine content instead of getting the index.html fallback
+const rootConfigFiles = [
+  "package.json",
+  "tsconfig.json",
+  ".env.example",
+  ".gitignore",
+  "vite.config.ts",
+  "metadata.json",
+  "Dockerfile",
+  ".dockerignore",
+  "package-lock.json"
+];
+
+rootConfigFiles.forEach((file) => {
+  app.get(`/${file}`, (req, res) => {
+    const filePath = path.join(process.cwd(), file);
+    if (fs.existsSync(filePath)) {
+      if (file.endsWith(".json")) {
+        res.setHeader("Content-Type", "application/json");
+      } else if (file.endsWith(".ts")) {
+        res.setHeader("Content-Type", "text/plain");
+      } else {
+        res.setHeader("Content-Type", "text/plain");
+      }
+      res.sendFile(filePath);
+    } else {
+      res.status(404).send("Not found");
+    }
+  });
+});
+
 // --- API ROUTES ---
 
 // 1. Settings Routes
