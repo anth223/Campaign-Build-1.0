@@ -1,0 +1,6 @@
+{
+  "name": "Personalized Email Campaigner",
+  "description": "Upload companies CSV, generate personalized email subjects and bodies with Gemini by industry, send via custom SMTP or simulation mode, and track opens and responses in real-time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
